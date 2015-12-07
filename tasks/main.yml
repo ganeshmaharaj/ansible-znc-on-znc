@@ -61,6 +61,7 @@
   become_user: "{{znc_system_user}}"
   tags:
     - zncconfig
+  when: znc_clients is defined
 
 # based on https://github.com/willshersystems/ansible-znc/blob/master/tasks/ssl.yml
 - name: "Base SSL certificate"
@@ -93,6 +94,7 @@
   tags:
     - zncconfig
     - ssl
+  when: znc_clients is defined
 
 - name: "Base ZNC config file"
   template: src=znc-base.conf
@@ -116,6 +118,7 @@
   become_user: "{{znc_system_user}}"
   tags:
     - zncconfig
+  when: znc_clients is defined
 
 - name: "Base monit config"
   template: src=znc-monit.conf
@@ -137,6 +140,7 @@
   with_items: "{{znc_clients}}"
   tags:
     - monitconfig
+  when: znc_clients is defined
 
 - name: Make sure monit is running
   service: name=monit state=started enabled=yes
